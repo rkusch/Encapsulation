@@ -28,6 +28,7 @@ public class Employee {
     private boolean movedIn;
     private String cubeId;
     private Date orientationDate;
+    private String fmtDate;
 
     public Employee(String firstName, String lastName, String ssn) {
         this.firstName = firstName;
@@ -35,8 +36,24 @@ public class Employee {
         this.ssn = ssn;
     }
     
+    private void setDateCompleted() {
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        String fmtDate = sdf.format(orientationDate);
+    }
+
+    public String getFmtDate() {
+        return fmtDate;
+    }
+
+    public void setFmtDate(String fmtDate) {
+        this.fmtDate = fmtDate;
+    }
+   
+    
     
     public void completeOrientation() {
+        this.setDateCompleted();
+        this.setOrientationDate(orientationDate);
         this.meetWithHrForBenefitAndSalryInfo();
         this.meetDepartmentStaff();
         this.reviewDeptPolicies();
@@ -48,8 +65,6 @@ public class Employee {
     // would only do this once, upon being hired.
     private void meetWithHrForBenefitAndSalryInfo() {
         metWithHr = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);
         System.out.println(firstName + " " + lastName + " met with Hr on "
                 + fmtDate);
     }
@@ -58,8 +73,6 @@ public class Employee {
     // would only do this once, upon being hired.:
     private void meetDepartmentStaff() {
         metDeptStaff = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);
         System.out.println(firstName + " " + lastName + " met with Dept. Staff on "
                 + fmtDate);
     }
@@ -67,10 +80,9 @@ public class Employee {
     // Assume this must be performed third. And assume that because department
     // policies may change that this method may need to be called 
     // independently from other classes.
-    private void reviewDeptPolicies() {
+    public void reviewDeptPolicies() {
         reviewedDeptPolicies = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);
+        setDateCompleted();
         System.out.println(firstName + " " + lastName + " reviewed Dept policies on "
                 + fmtDate);
     }
@@ -81,8 +93,7 @@ public class Employee {
     public void moveIntoCubicle(String cubeId) {
         this.cubeId = cubeId;
         this.movedIn = true;
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        String fmtDate = sdf.format(orientationDate);
+        setDateCompleted();
         System.out.println(firstName + " " + lastName + " moved into cubicle "
                 + cubeId + " on " + fmtDate);
     }
@@ -161,7 +172,11 @@ public class Employee {
     }
 
     public void setCubeId(String cubeId) {
-        this.cubeId = cubeId;
+        int valCubeId = Integer.parseInt(this.cubeId);
+        if (valCubeId< 1 || valCubeId > 1000) {
+            throw new IllegalArgumentException("Enter a cube number");
+        }
+        this.cubeId = Integer.toString(valCubeId);
     }
 
     public Date getOrientationDate() {
