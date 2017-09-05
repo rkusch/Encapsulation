@@ -11,8 +11,8 @@ package lab4;
  */
 public class HiringManager {
     
-    private void Employee createHiringManager() {
-        
+    public void createHiringManager(String firstName, String lastName, String ssn) {
+        Employee employeeToManager = new Employee(firstName,lastName,ssn);
         
     }
 }
